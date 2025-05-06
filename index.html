@@ -196,6 +196,7 @@
             flex-direction: column;
             height: calc(100vh - 76px);
             position: relative;
+            padding-top: 20px; /* Add padding to prevent blocks from being cut off */
         }
         
         #canvas-container {
@@ -206,20 +207,23 @@
             overflow: auto;
             background: #000;
             position: relative;
+            padding: 30px; /* Add padding around the canvas */
         }
         
         .canvas-wrapper {
             position: relative;
             display: inline-block;
+            border: 2px solid #333;
+            border-radius: 8px;
+            overflow: hidden; /* Keep everything contained */
         }
         
         #canvas {
             cursor: pointer;
             image-rendering: pixelated;
-            border: 2px solid #333;
-            border-radius: 8px;
             transition: transform 0.1s ease;
             background-color: #ffffff;
+            display: block; /* Fix alignment issues */
         }
         
         #grid-overlay {
@@ -228,6 +232,7 @@
             left: 0;
             pointer-events: none;
             z-index: 10;
+            display: block; /* Fix alignment issues */
         }
         
         /* Block tooltip styles */
@@ -1021,14 +1026,16 @@
         function initCanvas() {
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw grid initially
             drawGrid();
         }
         
         // Draw grid lines
         function drawGrid() {
             gridCtx.clearRect(0, 0, gridOverlay.width, gridOverlay.height);
-            gridCtx.strokeStyle = 'rgba(100, 100, 100, 0.3)';
-            gridCtx.lineWidth = 0.5;
+            gridCtx.strokeStyle = 'rgba(150, 150, 150, 0.5)'; // Make grid more visible
+            gridCtx.lineWidth = 1;
             
             // Draw vertical lines
             for (let x = 0; x <= CANVAS_SIZE; x += BLOCK_SIZE) {
@@ -1166,6 +1173,9 @@
                 highlightBlock(selectedBlock.x, selectedBlock.y);
             }
             
+            // Make sure grid is visible after updating state
+            drawGrid();
+            
             // Update stats display
             blocksSold = Object.keys(blocks).length;
             updateStatsDisplay();
@@ -1175,7 +1185,19 @@
         function loadAndDrawImage(x, y, imageData) {
             const img = new Image();
             img.onload = () => {
-                ctx.drawImage(img, x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                // Use integer positions to ensure crisp rendering
+                const xPos = Math.floor(x * BLOCK_SIZE);
+                const yPos = Math.floor(y * BLOCK_SIZE);
+                
+                // First clear the block area
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(xPos, yPos, BLOCK_SIZE, BLOCK_SIZE);
+                
+                // Then draw the image precisely at block boundaries
+                ctx.drawImage(img, xPos, yPos, BLOCK_SIZE, BLOCK_SIZE);
+                
+                // Ensure grid stays visible
+                drawGrid();
             };
             img.src = imageData;
         }
@@ -1199,10 +1221,10 @@
             // Different highlight colors for available vs owned blocks
             const highlightColor = isOwned ? '#FF4444' : '#00FFA3';
             
-            // Clear previous highlight by redrawing the grid
+            // First redraw the full grid to keep it visible
             drawGrid();
             
-            // Draw highlight
+            // Then add the block highlight
             gridCtx.strokeStyle = highlightColor;
             gridCtx.lineWidth = 2;
             gridCtx.strokeRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
@@ -1444,6 +1466,11 @@
             // Apply zoom to the wrapper instead of individual canvases
             canvasWrapper.style.transform = `scale(${currentScale})`;
             document.getElementById('reset-zoom').textContent = `${Math.round(currentScale * 100)}%`;
+            
+            // Redraw grid after zoom to ensure it's visible
+            setTimeout(() => {
+                drawGrid();
+            }, 50);
         }
         
         // Handle image upload
@@ -1940,14 +1967,35 @@
         
         // Position grid overlay correctly on top of the canvas
         function positionGridOverlay() {
-            // Let the wrapper handle positioning both canvases
+            // Make sure grid overlay is aligned with canvas
             gridOverlay.style.position = 'absolute';
             gridOverlay.style.top = '0';
             gridOverlay.style.left = '0';
+            
+            // Add a small delay to ensure grid is visible after page loads
+            setTimeout(() => {
+                drawGrid(); // Redraw grid to ensure it's visible
+            }, 100);
+        }
+        
+        // Setup resize observer to maintain grid visibility
+        function setupResizeObserver() {
+            // Create a resize observer to redraw grid when canvas size changes
+            if (window.ResizeObserver) {
+                const resizeObserver = new ResizeObserver(() => {
+                    drawGrid();
+                });
+                
+                // Observe the canvas wrapper
+                resizeObserver.observe(canvasWrapper);
+            }
         }
         
         // Make sure grid overlay is repositioned on window resize
-        window.addEventListener('resize', positionGridOverlay);
+        window.addEventListener('resize', function() {
+            positionGridOverlay();
+            drawGrid();
+        });
         
         // Initialize the app
         async function initApp() {
@@ -1974,11 +2022,17 @@
             // Position grid overlay correctly
             positionGridOverlay();
             
+            // Setup resize observer to maintain grid visibility
+            setupResizeObserver();
+            
             // Set initial stats
             updateStatsDisplay();
             
             // Updated instructions to reflect simpler click behavior
             updateStatus('Click on any block to select it or visit its URL if already owned');
+            
+            // Redraw grid after a short delay to ensure it's visible
+            setTimeout(drawGrid, 500);
         }
         
         // Start the app when document is ready
