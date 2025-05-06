@@ -1,7 +1,7 @@
 {
-  "name": "place-clone-backend",
+  "name": "million-dollar-sol-page",
   "version": "1.0.0",
-  "description": "Backend for Place Clone - Pixel Art Canvas",
+  "description": "Million Dollar Solana Page",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -12,7 +12,8 @@
     "@solana/web3.js": "^1.87.6",
     "cors": "^2.8.5",
     "express": "^4.18.2",
-    "ws": "^8.14.2"
+    "ws": "^8.14.2",
+    "firebase-admin": "^11.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
