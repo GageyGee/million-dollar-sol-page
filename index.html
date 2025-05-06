@@ -1,0 +1,1755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Million Dollar Sol Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        #container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        #canvas-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: auto;
+            background: #000;
+            position: relative;
+        }
+        
+        #canvas {
+            cursor: crosshair;
+            image-rendering: pixelated;
+            border: 2px solid #333;
+            border-radius: 8px;
+            transition: transform 0.1s ease;
+            background-color: #ffffff;
+        }
+        
+        #grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        #sidebar {
+            width: 420px;
+            background: rgba(20, 20, 20, 0.95);
+            border-left: 1px solid #333;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow-y: auto;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        
+        .logo-container {
+            flex-grow: 1;
+        }
+        
+        .twitter-link {
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #999;
+            margin-left: 10px;
+            transition: color 0.2s ease;
+            margin-top: 5px;
+        }
+        
+        .twitter-link:hover {
+            color: #1DA1F2;
+        }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(45deg, #00FFA3, #03E1FF, #DC1FFF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        
+        .card {
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #00FFA3;
+        }
+        
+        button {
+            padding: 14px 24px;
+            background: linear-gradient(45deg, #00FFA3, #03E1FF);
+            border: none;
+            border-radius: 8px;
+            color: #ffffff !important;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            width: 100%;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 255, 163, 0.3);
+        }
+        
+        button:disabled {
+            background: rgba(100, 100, 100, 0.5);
+            transform: none;
+            box-shadow: none;
+            cursor: not-allowed;
+            color: #888 !important;
+        }
+        
+        .footer-buttons {
+            margin-top: auto;
+            padding-top: 16px;
+            width: 100%;
+        }
+        
+        #how-it-works-btn, #contract-address-btn {
+            background: linear-gradient(45deg, #DC1FFF, #03E1FF);
+            color: #ffffff !important;
+            padding: 10px 24px;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+        
+        #wallet-info {
+            font-size: 14px;
+            color: #888;
+            font-family: monospace;
+        }
+        
+        #status-message {
+            padding: 12px;
+            border-radius: 8px;
+            background: rgba(40, 40, 40, 0.8);
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #00FFA3, #DC1FFF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .stat-card {
+            background: rgba(40, 40, 40, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #00FFA3;
+            word-break: break-all;
+        }
+        
+        .stat-label {
+            font-size: 10px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .burn-stats {
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        
+        .burn-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FF4444;
+            margin-bottom: 8px;
+        }
+        
+        .burn-label {
+            font-size: 14px;
+            color: #888;
+        }
+        
+        .connected-indicator {
+            width: 8px;
+            height: 8px;
+            background: #00FFA3;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .copy-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #00FFA3;
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .copy-notification.show {
+            opacity: 1;
+        }
+        
+        /* Image Upload Styles */
+        .image-upload-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        
+        #image-preview {
+            width: 100%;
+            height: 100px;
+            border: 2px dashed rgba(0, 255, 163, 0.5);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 14px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .upload-instructions {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            margin-top: 8px;
+        }
+        
+        #upload-image-btn {
+            background: linear-gradient(45deg, #DC1FFF, #03E1FF);
+            margin-top: 8px;
+        }
+        
+        #file-input {
+            display: none;
+        }
+        
+        .selected-block-info {
+            padding: 12px;
+            border-radius: 8px;
+            background: rgba(40, 40, 40, 0.8);
+            margin-bottom: 12px;
+            text-align: center;
+            font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .selected-block-coords {
+            font-weight: 600;
+            color: #00FFA3;
+        }
+        
+        /* Grid overlay styles */
+        .grid-line {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+        }
+        
+        .horizontal-line {
+            width: 100%;
+            height: 1px;
+        }
+        
+        .vertical-line {
+            height: 100%;
+            width: 1px;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 16px;
+            width: 80%;
+            max-width: 800px;
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
+            overflow: visible;
+            max-height: none;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .close {
+            color: #888;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close:hover {
+            color: #00FFA3;
+        }
+        
+        .modal h2 {
+            color: #00FFA3;
+            margin-bottom: 16px;
+            font-size: 24px;
+        }
+        
+        .modal h3 {
+            color: #03E1FF;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+        
+        .modal p, .modal li {
+            color: #888;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .modal ul {
+            padding-left: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .modal li {
+            margin-bottom: 6px;
+        }
+        
+        .feature-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        
+        .feature-item {
+            background: rgba(40, 40, 40, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
+        .feature-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        
+        .feature-item h4 {
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: #00FFA3;
+        }
+        
+        .feature-item p {
+            font-size: 12px;
+            margin-bottom: 0;
+        }
+        
+        /* Confirmation modal */
+        #confirmation-modal {
+            z-index: 1100;
+        }
+        
+        .confirmation-content {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .confirmation-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .confirmation-actions button {
+            flex: 1;
+            max-width: 200px;
+        }
+        
+        #confirm-cancel {
+            background: linear-gradient(45deg, #666, #999);
+        }
+        
+        #confirm-purchase {
+            background: linear-gradient(45deg, #00FFA3, #03E1FF);
+        }
+        
+        .confirmation-preview {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        
+        .confirmation-image {
+            width: 150px;
+            height: 150px;
+            background-color: #222;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        
+        .confirmation-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .confirmation-details {
+            text-align: left;
+        }
+        
+        .confirmation-detail {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #888;
+        }
+        
+        .confirmation-label {
+            color: #03E1FF;
+            font-weight: 600;
+            display: inline-block;
+            width: 100px;
+        }
+        
+        /* Block tooltip styles */
+        .block-tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 1000;
+            border: 1px solid rgba(0, 255, 163, 0.3);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            max-width: 250px;
+        }
+        
+        .wallet-link {
+            color: #00FFA3;
+            text-decoration: none;
+        }
+        
+        .wallet-link:hover {
+            text-decoration: underline;
+        }
+        
+        .timestamp {
+            color: #666;
+            font-size: 10px;
+            margin-top: 4px;
+        }
+        
+        /* Zoom controls */
+        .zoom-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .zoom-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #333;
+            color: white;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .zoom-btn:hover {
+            background: #444;
+        }
+        
+        #zoom-in {
+            background: linear-gradient(45deg, #00FFA3, #03E1FF);
+        }
+        
+        #zoom-out {
+            background: linear-gradient(45deg, #03E1FF, #DC1FFF);
+        }
+        
+        #reset-zoom {
+            background: #444;
+            width: auto;
+            border-radius: 20px;
+            padding: 0 15px;
+            font-size: 14px;
+        }
+        
+        /* Stats bar at the top */
+        .stats-bar {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 8px 16px;
+            display: flex;
+            gap: 20px;
+            font-size: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 50;
+        }
+        
+        .stats-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .stats-label {
+            color: #888;
+        }
+        
+        .stats-value {
+            color: #00FFA3;
+            font-weight: 600;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #444;
+        }
+        
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 90%;
+                padding: 16px;
+            }
+            
+            .feature-list {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .modal h2 {
+                font-size: 20px;
+            }
+            
+            .modal h3 {
+                font-size: 16px;
+            }
+            
+            #container {
+                flex-direction: column;
+            }
+            
+            #sidebar {
+                width: 100%;
+                max-height: 300px;
+            }
+            
+            #canvas-container {
+                height: calc(100vh - 300px);
+            }
+            
+            .stats-bar {
+                width: 90%;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="canvas-container">
+            <!-- Stats bar at top -->
+            <div class="stats-bar">
+                <div class="stats-item">
+                    <div class="stats-label">Blocks Sold:</div>
+                    <div class="stats-value" id="blocks-sold">0</div>
+                </div>
+                <div class="stats-item">
+                    <div class="stats-label">Blocks Available:</div>
+                    <div class="stats-value" id="blocks-available">10,000</div>
+                </div>
+                <div class="stats-item">
+                    <div class="stats-label">Total $MDSP Burned:</div>
+                    <div class="stats-value" id="total-burned">0</div>
+                </div>
+            </div>
+            
+            <!-- Main canvas -->
+            <canvas id="canvas" width="1000" height="1000"></canvas>
+            <canvas id="grid-overlay" width="1000" height="1000"></canvas>
+            
+            <!-- Zoom controls -->
+            <div class="zoom-controls">
+                <div class="zoom-btn" id="zoom-out">-</div>
+                <div class="zoom-btn" id="reset-zoom">100%</div>
+                <div class="zoom-btn" id="zoom-in">+</div>
+            </div>
+        </div>
+        
+        <div id="sidebar">
+            <div class="header-container">
+                <div class="logo-container">
+                    <h1 class="logo">Million Dollar Sol Page</h1>
+                    <p style="color: #666; font-size: 14px;">Own a piece of Solana history. Forever.</p>
+                </div>
+                <a href="https://x.com/MDSolPage" target="_blank" class="twitter-link" title="Follow us on X/Twitter">𝕏</a>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">Wallet Connection</div>
+                <button id="connect-wallet" onclick="connectWallet()">Connect Phantom</button>
+                <p id="wallet-info" style="margin-top: 12px;">
+                    <span class="connected-indicator" style="display: none;"></span>
+                    <span id="wallet-address">Not connected</span>
+                </p>
+            </div>
+            
+            <div class="selected-block-info" id="selected-block-info" style="display: none;">
+                <div>Selected Block: <span class="selected-block-coords" id="selected-coords">None</span></div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">Upload Your Image</div>
+                <div class="image-upload-container">
+                    <div id="image-preview">Select a block first</div>
+                    <p class="upload-instructions">Upload a 10x10 image or larger (will be resized)</p>
+                    <button id="upload-image-btn" onclick="triggerFileInput()" disabled>Select Image</button>
+                    <input type="file" id="file-input" accept="image/*" onchange="handleImageUpload(event)">
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="balance">0</div>
+                    <div class="stat-label">$MDSP Balance</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">100</div>
+                    <div class="stat-label">Cost per Block</div>
+                </div>
+            </div>
+            
+            <div class="burn-stats">
+                <div class="burn-value" id="burned-amount">0</div>
+                <div class="burn-label">$MDSP Burned Total</div>
+            </div>
+            
+            <button id="purchase-block" onclick="confirmPurchase()" disabled>Purchase Block</button>
+            
+            <div id="status-message">Connect your wallet to start</div>
+            
+            <div class="footer-buttons">
+                <button id="contract-address-btn" onclick="copyContractAddress()">Copy $MDSP CA</button>
+                <button id="how-it-works-btn" onclick="showHowItWorks()">How It Works</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="copy-notification" id="copy-notification">Contract address copied!</div>
+    
+    <!-- Block tooltip for hover info -->
+    <div id="block-tooltip" class="block-tooltip" style="display: none;"></div>
+    
+    <!-- How It Works Modal -->
+    <div id="how-it-works-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('how-it-works-modal')">&times;</span>
+            <h2>Million Dollar Sol Page: How It Works</h2>
+            
+            <h3>The Concept</h3>
+            <p>Inspired by the original Million Dollar Homepage from 2005, the Million Dollar Sol Page is a 1000x1000 pixel canvas divided into 10,000 blocks of 10x10 pixels each. Once you purchase a block, it's yours forever on the Solana blockchain.</p>
+            
+            <h3>Getting Started</h3>
+            <ul>
+                <li>Connect your Phantom wallet</li>
+                <li>Ensure you have $MDSP tokens</li>
+                <li>Click any available block on the canvas</li>
+                <li>Upload your image (will be resized to 10x10 pixels)</li>
+                <li>Pay 100 $MDSP to purchase the block permanently</li>
+            </ul>
+            
+            <h3>Features</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">🖼️</div>
+                    <h4>Permanent Ownership</h4>
+                    <p>Your block is yours forever</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <h4>Real-time Updates</h4>
+                    <p>See changes instantly</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔥</div>
+                    <h4>Token Burning</h4>
+                    <p>$MDSP deflationary</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🌐</div>
+                    <h4>Blockchain Secured</h4>
+                    <p>Solana-powered ownership</p>
+                </div>
+            </div>
+            
+            <h3>Deflationary Mechanism</h3>
+            <p>Every block purchase burns 100 $MDSP tokens, removing them from circulation and increasing scarcity over time.</p>
+            
+            <h3>Dev Allocation</h3>
+            <p>The development team holds 2% of the token supply, which is locked for 3 months and then vested over a period of 1 year. These funds will be used to cover server costs, scaling infrastructure, and future feature development.</p>
+            
+            <h3>Tips</h3>
+            <ul>
+                <li>Use the zoom controls to navigate the canvas</li>
+                <li>Hover over blocks to see who owns them</li>
+                <li>Images will be automatically resized to 10x10 pixels</li>
+                <li>Check your $MDSP balance before purchasing</li>
+                <li>Be creative with your image - it will be part of Solana history!</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('confirmation-modal')">&times;</span>
+            <h2>Confirm Your Purchase</h2>
+            
+            <div class="confirmation-content">
+                <p>You are about to purchase this block permanently. After purchase, this block will be yours forever on the Million Dollar Sol Page.</p>
+                
+                <div class="confirmation-preview">
+                    <div class="confirmation-image">
+                        <img id="confirm-image-preview" src="" alt="Your image">
+                    </div>
+                    <div class="confirmation-details">
+                        <div class="confirmation-detail">
+                            <span class="confirmation-label">Block:</span>
+                            <span id="confirm-coords"></span>
+                        </div>
+                        <div class="confirmation-detail">
+                            <span class="confirmation-label">Size:</span>
+                            <span>10x10 pixels</span>
+                        </div>
+                        <div class="confirmation-detail">
+                            <span class="confirmation-label">Cost:</span>
+                            <span>100 $MDSP</span>
+                        </div>
+                        <div class="confirmation-detail">
+                            <span class="confirmation-label">Status:</span>
+                            <span>Permanent ownership</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="confirmation-actions">
+                    <button id="confirm-cancel" onclick="closeModal('confirmation-modal')">Cancel</button>
+                    <button id="confirm-purchase" onclick="purchaseBlock()">Purchase Block</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+    
+    <script>
+        // Global variables
+        const API_URL = 'https://million-dollar-sol-page.onrender.com';
+        const WS_URL = 'wss://million-dollar-sol-page.onrender.com';
+        
+        const MDSP_TOKEN = 'DQNehPFiu3jaVxqLnotGVpppsLy1qeAQeKSuxSHepump'; // Replace with actual token address
+        const BURN_ADDRESS = '1nc1nerator11111111111111111111111111111111';
+        const COST_PER_BLOCK = 100;
+        const TOKEN_DECIMALS = 6;
+        const CANVAS_SIZE = 1000;
+        const BLOCK_SIZE = 10;
+        const GRID_CELLS = CANVAS_SIZE / BLOCK_SIZE; // 100x100 grid
+        
+        // Use your paid QuickNode RPC endpoint
+        const RPC_ENDPOINT = 'https://radial-chaotic-pool.solana-mainnet.quiknode.pro/192e8e76f0a288f5a32ace0b676f7f34778f219f/';
+        
+        const TOKEN_PROGRAM_ID = new solanaWeb3.PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+        const ASSOCIATED_TOKEN_PROGRAM_ID = new solanaWeb3.PublicKey('ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL');
+        
+        let selectedBlock = null;
+        let selectedImage = null;
+        let walletAddress = null;
+        let ws = null;
+        let connection = null;
+        let currentScale = 1;
+        let blockState = {};
+        let totalBurned = 0;
+        let blocksSold = 0;
+        
+        // DOM elements
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const gridOverlay = document.getElementById('grid-overlay');
+        const gridCtx = gridOverlay.getContext('2d');
+        const connectWalletBtn = document.getElementById('connect-wallet');
+        const purchaseBlockBtn = document.getElementById('purchase-block');
+        const uploadImageBtn = document.getElementById('upload-image-btn');
+        const statusMessage = document.getElementById('status-message');
+        const walletAddressSpan = document.getElementById('wallet-address');
+        const balanceSpan = document.getElementById('balance');
+        const burnedAmountSpan = document.getElementById('burned-amount');
+        const blocksSoldSpan = document.getElementById('blocks-sold');
+        const blocksAvailableSpan = document.getElementById('blocks-available');
+        const totalBurnedSpan = document.getElementById('total-burned');
+        const connectedIndicator = document.querySelector('.connected-indicator');
+        const imagePreview = document.getElementById('image-preview');
+        const blockTooltip = document.getElementById('block-tooltip');
+        const selectedBlockInfo = document.getElementById('selected-block-info');
+        const selectedCoordsSpan = document.getElementById('selected-coords');
+        
+        // Initialize canvas and grid
+        function initCanvas() {
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            drawGrid();
+        }
+        
+        // Draw grid lines
+        function drawGrid() {
+            gridCtx.clearRect(0, 0, gridOverlay.width, gridOverlay.height);
+            gridCtx.strokeStyle = 'rgba(100, 100, 100, 0.3)';
+            gridCtx.lineWidth = 0.5;
+            
+            // Draw vertical lines
+            for (let x = 0; x <= CANVAS_SIZE; x += BLOCK_SIZE) {
+                gridCtx.beginPath();
+                gridCtx.moveTo(x, 0);
+                gridCtx.lineTo(x, CANVAS_SIZE);
+                gridCtx.stroke();
+            }
+            
+            // Draw horizontal lines
+            for (let y = 0; y <= CANVAS_SIZE; y += BLOCK_SIZE) {
+                gridCtx.beginPath();
+                gridCtx.moveTo(0, y);
+                gridCtx.lineTo(CANVAS_SIZE, y);
+                gridCtx.stroke();
+            }
+        }
+        
+        // Initialize WebSocket
+        function initWebSocket() {
+            try {
+                console.log('Connecting to WebSocket server...');
+                ws = new WebSocket(WS_URL);
+                
+                ws.onopen = () => {
+                    console.log('WebSocket connected');
+                    updateStatus('Connected to server');
+                    
+                    // Request the full canvas state
+                    ws.send(JSON.stringify({ 
+                        type: 'get_canvas_state',
+                        client: walletAddress || 'anonymous_' + Math.random().toString(36).substring(2, 10)
+                    }));
+                };
+                
+                ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        
+                        if (data.type === 'canvas_state') {
+                            console.log('Canvas state received');
+                            blockState = data.blocks || {};
+                            updateCanvasState(blockState);
+                            totalBurned = data.totalBurned || 0;
+                            blocksSold = Object.keys(blockState).length || 0;
+                            updateStatsDisplay();
+                        } else if (data.type === 'block_update') {
+                            console.log('Block update received:', data.x, data.y, data.imageData);
+                            
+                            // Store full block data
+                            const blockKey = `${data.x},${data.y}`;
+                            blockState[blockKey] = {
+                                imageData: data.imageData,
+                                wallet: data.walletAddress,
+                                timestamp: data.timestamp,
+                                url: data.url || null
+                            };
+                            
+                            updateBlock(data.x, data.y, data.imageData);
+                            
+                            // Update stats
+                            blocksSold = Object.keys(blockState).length || 0;
+                            totalBurned += COST_PER_BLOCK;
+                            updateStatsDisplay();
+                        }
+                    } catch (error) {
+                        console.error('Error processing message:', error);
+                    }
+                };
+                
+                ws.onclose = () => {
+                    console.log('WebSocket disconnected');
+                    updateStatus('Connection lost. Reconnecting...');
+                    setTimeout(initWebSocket, 3000);
+                };
+                
+                ws.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                    updateStatus('Connection error. Retrying...');
+                };
+            } catch (error) {
+                console.error('Error creating WebSocket:', error);
+                setTimeout(initWebSocket, 3000);
+            }
+        }
+        
+        // Initialize connection to Solana with the QuickNode RPC
+        async function initConnection() {
+            try {
+                console.log('Connecting to Solana RPC:', RPC_ENDPOINT);
+                connection = new solanaWeb3.Connection(RPC_ENDPOINT, {
+                    commitment: 'confirmed',
+                    confirmTransactionInitialTimeout: 60000,
+                    disableRetryOnRateLimit: false
+                });
+                
+                // Test the connection
+                const version = await connection.getVersion();
+                console.log('Connected to Solana RPC, version:', version);
+                
+                return true;
+            } catch (error) {
+                console.error('RPC connection error:', error);
+                
+                // Fallback to public endpoint
+                try {
+                    const fallbackEndpoint = 'https://api.mainnet-beta.solana.com';
+                    console.log('Falling back to public endpoint:', fallbackEndpoint);
+                    connection = new solanaWeb3.Connection(fallbackEndpoint, 'confirmed');
+                    
+                    return true;
+                } catch (fallbackError) {
+                    console.error('Fallback RPC error:', fallbackError);
+                    return false;
+                }
+            }
+        }
+        
+        // Update canvas state with blocks
+        function updateCanvasState(blocks) {
+            // Clear canvas first
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw each block's image
+            Object.entries(blocks).forEach(([key, data]) => {
+                const [x, y] = key.split(',').map(Number);
+                
+                if (data.imageData) {
+                    loadAndDrawImage(x, y, data.imageData);
+                }
+            });
+            
+            if (selectedBlock) {
+                highlightBlock(selectedBlock.x, selectedBlock.y);
+            }
+            
+            // Update stats display
+            blocksSold = Object.keys(blocks).length;
+            updateStatsDisplay();
+        }
+        
+        // Load and draw an image for a specific block
+        function loadAndDrawImage(x, y, imageData) {
+            const img = new Image();
+            img.onload = () => {
+                ctx.drawImage(img, x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            };
+            img.src = imageData;
+        }
+        
+        // Update a single block
+        function updateBlock(x, y, imageData) {
+            if (imageData) {
+                loadAndDrawImage(x, y, imageData);
+            }
+            
+            if (selectedBlock && selectedBlock.x === x && selectedBlock.y === y) {
+                highlightBlock(x, y);
+            }
+        }
+        
+        // Highlight the selected block
+        function highlightBlock(x, y) {
+            const blockKey = `${x},${y}`;
+            const isOwned = blockState[blockKey] !== undefined;
+            
+            // Different highlight colors for available vs owned blocks
+            const highlightColor = isOwned ? '#FF4444' : '#00FFA3';
+            
+            gridCtx.strokeStyle = highlightColor;
+            gridCtx.lineWidth = 2;
+            gridCtx.strokeRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            
+            // Update UI to show selected block
+            selectedBlockInfo.style.display = 'block';
+            selectedCoordsSpan.textContent = `(${x}, ${y})`;
+            
+            // Only enable upload if block is available
+            uploadImageBtn.disabled = isOwned;
+            purchaseBlockBtn.disabled = isOwned || !selectedImage;
+            
+            // Update status message
+            if (isOwned) {
+                const owner = blockState[blockKey].wallet;
+                const shortOwner = owner ? `${owner.slice(0, 6)}...${owner.slice(-4)}` : 'Unknown';
+                updateStatus(`Block (${x}, ${y}) is already owned by ${shortOwner}`);
+            } else {
+                updateStatus(`Block (${x}, ${y}) is available for purchase`);
+            }
+        }
+        
+        // Handle block hover for tooltip
+        function showBlockTooltip(x, y, mouseX, mouseY) {
+            const blockKey = `${x},${y}`;
+            const blockData = blockState[blockKey];
+            
+            if (!blockData) {
+                hideBlockTooltip();
+                return;
+            }
+            
+            const wallet = blockData.wallet;
+            const timestamp = blockData.timestamp ? new Date(blockData.timestamp).toLocaleString() : 'Unknown date';
+            const shortWallet = wallet ? wallet.slice(0, 6) + '...' + wallet.slice(-4) : 'Unknown';
+            
+            blockTooltip.innerHTML = `
+                <div>Owned by: <a href="https://solscan.io/account/${wallet}" target="_blank" class="wallet-link">${shortWallet}</a></div>
+                <div class="timestamp">Purchased: ${timestamp}</div>
+            `;
+            
+            blockTooltip.style.display = 'block';
+            blockTooltip.style.left = `${mouseX + 10}px`;
+            blockTooltip.style.top = `${mouseY + 10}px`;
+        }
+        
+        function hideBlockTooltip() {
+            blockTooltip.style.display = 'none';
+        }
+        
+        // Utility functions
+        function formatTokenAmount(num) {
+            const actualValue = num / Math.pow(10, TOKEN_DECIMALS);
+            if (actualValue < 1000) return actualValue.toString();
+            if (actualValue < 1000000) {
+                const k = actualValue / 1000;
+                return k % 1 === 0 ? k + 'K' : k.toFixed(1) + 'K';
+            }
+            const m = actualValue / 1000000;
+            return m % 1 === 0 ? m + 'M' : m.toFixed(1) + 'M';
+        }
+        
+        function updateStatus(message) {
+            statusMessage.textContent = message;
+        }
+        
+        function updateStatsDisplay() {
+            burnedAmountSpan.textContent = formatTokenAmount(totalBurned);
+            totalBurnedSpan.textContent = formatTokenAmount(totalBurned);
+            blocksSoldSpan.textContent = blocksSold.toLocaleString();
+            blocksAvailableSpan.textContent = (10000 - blocksSold).toLocaleString();
+        }
+        
+        // Event handlers
+        canvas.addEventListener('click', function(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            
+            const canvasX = (e.clientX - rect.left) * scaleX / currentScale;
+            const canvasY = (e.clientY - rect.top) * scaleY / currentScale;
+            
+            const x = Math.floor(canvasX / BLOCK_SIZE);
+            const y = Math.floor(canvasY / BLOCK_SIZE);
+            
+            if (x >= 0 && x < GRID_CELLS && y >= 0 && y < GRID_CELLS) {
+                selectedBlock = { x, y };
+                
+                // Redraw the grid to clear previous highlights
+                drawGrid();
+                
+                // Highlight the selected block
+                highlightBlock(x, y);
+                
+                // Check if this block is available
+                const blockKey = `${x},${y}`;
+                if (blockState[blockKey]) {
+                    // Block is owned
+                    imagePreview.innerHTML = 'Block already owned';
+                    imagePreview.style.backgroundImage = 'none';
+                    selectedImage = null;
+                    purchaseBlockBtn.disabled = true;
+                } else {
+                    // Block is available
+                    imagePreview.innerHTML = 'Upload an image for this block';
+                    imagePreview.style.backgroundImage = 'none';
+                    uploadImageBtn.disabled = !walletAddress;
+                    purchaseBlockBtn.disabled = true;
+                }
+            }
+        });
+        
+        // Canvas hover event for tooltip
+        canvas.addEventListener('mousemove', function(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            
+            const canvasX = (e.clientX - rect.left) * scaleX / currentScale;
+            const canvasY = (e.clientY - rect.top) * scaleY / currentScale;
+            
+            const x = Math.floor(canvasX / BLOCK_SIZE);
+            const y = Math.floor(canvasY / BLOCK_SIZE);
+            
+            if (x >= 0 && x < GRID_CELLS && y >= 0 && y < GRID_CELLS) {
+                const blockKey = `${x},${y}`;
+                
+                if (blockState[blockKey]) {
+                    showBlockTooltip(x, y, e.clientX, e.clientY);
+                } else {
+                    hideBlockTooltip();
+                }
+            } else {
+                hideBlockTooltip();
+            }
+        });
+        
+        canvas.addEventListener('mouseout', hideBlockTooltip);
+        
+        // Add zoom functionality
+        document.getElementById('zoom-in').addEventListener('click', function() {
+            currentScale = Math.min(5, currentScale * 1.2);
+            updateZoom();
+        });
+        
+        document.getElementById('zoom-out').addEventListener('click', function() {
+            currentScale = Math.max(0.2, currentScale / 1.2);
+            updateZoom();
+        });
+        
+        document.getElementById('reset-zoom').addEventListener('click', function() {
+            currentScale = 1;
+            updateZoom();
+        });
+        
+        function updateZoom() {
+            canvas.style.transform = `scale(${currentScale})`;
+            gridOverlay.style.transform = `scale(${currentScale})`;
+            document.getElementById('reset-zoom').textContent = `${Math.round(currentScale * 100)}%`;
+        }
+        
+        // Handle image upload
+        function triggerFileInput() {
+            if (!selectedBlock) {
+                updateStatus('Please select a block first');
+                return;
+            }
+            
+            document.getElementById('file-input').click();
+        }
+        
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.startsWith('image/')) {
+                updateStatus('Please select an image file');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    // Create a canvas to resize the image
+                    const resizeCanvas = document.createElement('canvas');
+                    resizeCanvas.width = BLOCK_SIZE;
+                    resizeCanvas.height = BLOCK_SIZE;
+                    const resizeCtx = resizeCanvas.getContext('2d');
+                    
+                    // Draw the image resized to 10x10
+                    resizeCtx.drawImage(img, 0, 0, BLOCK_SIZE, BLOCK_SIZE);
+                    
+                    // Get the resized image as base64
+                    selectedImage = resizeCanvas.toDataURL('image/png');
+                    
+                    // Update the preview
+                    imagePreview.innerHTML = '';
+                    imagePreview.style.backgroundImage = `url(${selectedImage})`;
+                    
+                    // Enable purchase button
+                    purchaseBlockBtn.disabled = !walletAddress;
+                    
+                    updateStatus('Image uploaded and resized. Ready to purchase block.');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // Connection and transaction functions
+        function connectWallet() {
+            try {
+                const { solana } = window;
+                if (!solana || !solana.isPhantom) {
+                    alert('Phantom wallet not installed!');
+                    return;
+                }
+                
+                updateStatus('Connecting to wallet...');
+                
+                solana.connect()
+                    .then(response => {
+                        walletAddress = response.publicKey.toString();
+                        walletAddressSpan.textContent = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
+                        connectWalletBtn.textContent = 'Connected';
+                        connectWalletBtn.disabled = true;
+                        connectedIndicator.style.display = 'inline-block';
+                        
+                        if (selectedBlock && !blockState[`${selectedBlock.x},${selectedBlock.y}`]) {
+                            uploadImageBtn.disabled = false;
+                            purchaseBlockBtn.disabled = !selectedImage;
+                        }
+                        
+                        updateStatus('Wallet connected!');
+                        
+                        checkBalance();
+                    })
+                    .catch(error => {
+                        updateStatus(`Error: ${error.message}`);
+                    });
+            } catch (error) {
+                updateStatus(`Error: ${error.message}`);
+            }
+        }
+        
+        async function checkBalance() {
+            if (!walletAddress) return;
+            
+            balanceSpan.textContent = 'Loading...';
+            try {
+                // Always use the correct token address for balance checks
+                const TOKEN_ADDRESS = new solanaWeb3.PublicKey(MDSP_TOKEN);
+                
+                try {
+                    // Try using direct RPC call with the specific SPL token address
+                    const ownerPubkey = new solanaWeb3.PublicKey(walletAddress);
+                    
+                    const associatedTokenAddress = await getAssociatedTokenAddress(
+                        TOKEN_ADDRESS,
+                        ownerPubkey
+                    );
+                    
+                    const accountInfo = await connection.getAccountInfo(associatedTokenAddress);
+                    
+                    if (accountInfo) {
+                        const data = accountInfo.data;
+                        // Get amount from SPL token account data structure (at offset 64)
+                        const dataView = new DataView(data.buffer, 64, 8);
+                        const amount = dataView.getBigUint64(0, true);
+                        
+                        // Format balance to display the actual token amount (accounting for decimals)
+                        const actualAmount = Number(amount) / Math.pow(10, TOKEN_DECIMALS);
+                        balanceSpan.textContent = formatTokenAmount(Number(amount));
+                        console.log(`Wallet has ${actualAmount} $MDSP tokens`);
+                    } else {
+                        balanceSpan.textContent = '0';
+                    }
+                } catch (directError) {
+                    console.error('Direct balance check error:', directError);
+                    
+                    // Fall back to server-side balance check if direct check fails
+                    const response = await fetch(`${API_URL}/balance/${walletAddress}`);
+                    const data = await response.json();
+                    
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
+                    
+                    balanceSpan.textContent = formatTokenAmount(data.formatted);
+                }
+            } catch (error) {
+                console.error('Balance check error:', error);
+                balanceSpan.textContent = '0';
+            }
+        }
+        
+        async function getAssociatedTokenAddress(mint, owner) {
+            try {
+                const [address] = await solanaWeb3.PublicKey.findProgramAddress(
+                    [
+                        owner.toBuffer(),
+                        TOKEN_PROGRAM_ID.toBuffer(),
+                        mint.toBuffer(),
+                    ],
+                    ASSOCIATED_TOKEN_PROGRAM_ID
+                );
+                return address;
+            } catch (error) {
+                console.error('Error getting associated token address:', error);
+                throw error;
+            }
+        }
+        
+        // Show confirmation modal before purchase
+        function confirmPurchase() {
+            if (!selectedBlock || !selectedImage || !walletAddress) {
+                updateStatus('Please select a block, upload an image, and connect your wallet');
+                return;
+            }
+            
+            // Check if block is already owned
+            const blockKey = `${selectedBlock.x},${selectedBlock.y}`;
+            if (blockState[blockKey]) {
+                updateStatus('This block is already owned');
+                return;
+            }
+            
+            // Set confirmation modal details
+            document.getElementById('confirm-coords').textContent = `(${selectedBlock.x}, ${selectedBlock.y})`;
+            document.getElementById('confirm-image-preview').src = selectedImage;
+            
+            // Show modal
+            document.getElementById('confirmation-modal').style.display = 'flex';
+        }
+        
+        // Create token transfer instruction
+        function createTokenTransferInstruction(fromTokenAccount, toTokenAccount, owner, amount) {
+            const data = new Uint8Array(9);
+            data[0] = 3; // Transfer instruction
+            const view = new DataView(data.buffer);
+            view.setBigUint64(1, BigInt(amount), true);
+            
+            return new solanaWeb3.TransactionInstruction({
+                keys: [
+                    { pubkey: fromTokenAccount, isSigner: false, isWritable: true },
+                    { pubkey: toTokenAccount, isSigner: false, isWritable: true },
+                    { pubkey: owner, isSigner: true, isWritable: false },
+                ],
+                programId: TOKEN_PROGRAM_ID,
+                data
+            });
+        }
+        
+        // Create associated token account instruction
+        function createAssociatedTokenAccountInstruction(payer, associatedToken, owner, mint) {
+            const keys = [
+                { pubkey: payer, isSigner: true, isWritable: true },
+                { pubkey: associatedToken, isSigner: false, isWritable: true },
+                { pubkey: owner, isSigner: false, isWritable: false },
+                { pubkey: mint, isSigner: false, isWritable: false },
+                { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
+                { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+                { pubkey: solanaWeb3.SYSVAR_RENT_PUBKEY, isSigner: false, isWritable: false },
+            ];
+            
+            return new solanaWeb3.TransactionInstruction({
+                keys,
+                programId: ASSOCIATED_TOKEN_PROGRAM_ID,
+                data: new Uint8Array(0)
+            });
+        }
+        
+        // Add Compute Budget Program instructions
+        function addPriorityFeeInstruction(transaction, priorityFee = 10000) {
+            const priorityFeeInstruction = solanaWeb3.ComputeBudgetProgram.setComputeUnitPrice({
+                microLamports: priorityFee
+            });
+            transaction.add(priorityFeeInstruction);
+        }
+        
+        function addComputeUnitLimitInstruction(transaction, computeUnitsLimit = 200000) {
+            const computeUnitLimitInstruction = solanaWeb3.ComputeBudgetProgram.setComputeUnitLimit({
+                units: computeUnitsLimit
+            });
+            transaction.add(computeUnitLimitInstruction);
+        }
+        
+        // Utility function to retry operations on errors
+        async function withRetry(fn, maxRetries = 3) {
+            let retries = 0;
+            let lastError = null;
+            
+            while (retries < maxRetries) {
+                try {
+                    return await fn();
+                } catch (error) {
+                    lastError = error;
+                    retries++;
+                    console.log(`Operation failed, retry ${retries}/${maxRetries}:`, error.message);
+                    
+                    // Exponential backoff
+                    if (retries < maxRetries) {
+                        const delay = Math.min(1000 * Math.pow(2, retries), 10000);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                    }
+                }
+            }
+            
+            throw lastError;
+        }
+        
+        // Purchase block and burn tokens
+        async function purchaseBlock() {
+            if (!selectedBlock || !selectedImage || !walletAddress) {
+                updateStatus('Please select a block, upload an image, and connect your wallet');
+                return;
+            }
+            
+            // Check if block is already owned
+            const blockKey = `${selectedBlock.x},${selectedBlock.y}`;
+            if (blockState[blockKey]) {
+                updateStatus('This block is already owned');
+                closeModal('confirmation-modal');
+                return;
+            }
+            
+            updateStatus('Creating transaction...');
+            purchaseBlockBtn.disabled = true;
+            
+            try {
+                const { solana } = window;
+                
+                // Get the latest blockhash - with retry
+                const latestBlockhash = await withRetry(async () => {
+                    return await connection.getLatestBlockhash();
+                });
+                
+                const mintPubkey = new solanaWeb3.PublicKey(MDSP_TOKEN);
+                const ownerPubkey = new solanaWeb3.PublicKey(walletAddress);
+                const burnPubkey = new solanaWeb3.PublicKey(BURN_ADDRESS);
+                
+                // Get token accounts - with retry
+                const ownerTokenAccount = await withRetry(async () => {
+                    return await getAssociatedTokenAddress(mintPubkey, ownerPubkey);
+                });
+                
+                const burnTokenAccount = await withRetry(async () => {
+                    return await getAssociatedTokenAddress(mintPubkey, burnPubkey);
+                });
+                
+                // Create a new transaction with priority fee and compute limit instructions
+                const transaction = new solanaWeb3.Transaction();
+                
+                // Add priority fee and compute unit limit instructions
+                addPriorityFeeInstruction(transaction, 50000); // Higher priority fee
+                addComputeUnitLimitInstruction(transaction, 200000);
+                
+                // Check if burn account exists and create it if needed
+                let burnAccountExists = false;
+                try {
+                    const burnAccountInfo = await connection.getAccountInfo(burnTokenAccount);
+                    burnAccountExists = !!burnAccountInfo;
+                } catch (error) {
+                    console.log('Error checking burn account:', error.message);
+                }
+                
+                if (!burnAccountExists) {
+                    console.log('Burn account does not exist, adding creation instruction');
+                    const createAccountInstruction = createAssociatedTokenAccountInstruction(
+                        ownerPubkey,
+                        burnTokenAccount,
+                        burnPubkey,
+                        mintPubkey
+                    );
+                    transaction.add(createAccountInstruction);
+                }
+                
+                // Create token transfer instruction
+                const amount = COST_PER_BLOCK * Math.pow(10, TOKEN_DECIMALS);
+                const transferInstruction = createTokenTransferInstruction(
+                    ownerTokenAccount,
+                    burnTokenAccount,
+                    ownerPubkey,
+                    amount
+                );
+                
+                transaction.add(transferInstruction);
+                transaction.recentBlockhash = latestBlockhash.blockhash;
+                transaction.feePayer = ownerPubkey;
+                
+                updateStatus('Waiting for wallet approval...');
+                
+                // Sign and send the transaction
+                const signResult = await solana.signAndSendTransaction(transaction);
+                const signature = signResult.signature;
+                console.log('Transaction signature:', signature);
+                
+                closeModal('confirmation-modal');
+                updateStatus('Transaction confirmed. Uploading image...');
+                
+                // Prepare block data for server
+                const timestamp = Date.now();
+                const blockData = {
+                    x: selectedBlock.x,
+                    y: selectedBlock.y,
+                    imageData: selectedImage,
+                    walletAddress: walletAddress,
+                    signature: signature,
+                    burnAddress: BURN_ADDRESS,
+                    tokenMint: MDSP_TOKEN,
+                    tokenAmount: amount.toString(),
+                    timestamp: timestamp
+                };
+                
+                // Optimistically update UI
+                blockState[blockKey] = {
+                    imageData: selectedImage,
+                    wallet: walletAddress,
+                    timestamp: timestamp
+                };
+                
+                // Update the block visually
+                updateBlock(selectedBlock.x, selectedBlock.y, selectedImage);
+                
+                // Update stats
+                blocksSold++;
+                totalBurned += COST_PER_BLOCK;
+                updateStatsDisplay();
+                
+                // Send via WebSocket
+                if (ws && ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify({
+                        type: 'block_update',
+                        ...blockData,
+                        self: true
+                    }));
+                }
+                
+                // Send to server
+                try {
+                    const response = await fetch(`${API_URL}/purchase-block`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(blockData)
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        updateStatus('Block purchased successfully!');
+                        
+                        // Check balance after successful placement
+                        checkBalance();
+                        
+                        // Reset selection
+                        selectedImage = null;
+                        imagePreview.innerHTML = 'Select a block first';
+                        imagePreview.style.backgroundImage = 'none';
+                        selectedBlockInfo.style.display = 'none';
+                        
+                        // Refresh canvas state
+                        if (ws && ws.readyState === WebSocket.OPEN) {
+                            setTimeout(() => {
+                                ws.send(JSON.stringify({
+                                    type: 'get_canvas_state',
+                                    client: walletAddress
+                                }));
+                            }, 2000);
+                        }
+                    } else {
+                        updateStatus(`Error: ${data.error || 'Unknown error'}`);
+                    }
+                } catch (fetchError) {
+                    console.error('Server error:', fetchError);
+                    updateStatus('Transaction confirmed but server synchronization failed');
+                }
+                
+            } catch (error) {
+                console.error('Transaction error:', error);
+                updateStatus(`Error: ${error.message}`);
+            } finally {
+                purchaseBlockBtn.disabled = false;
+            }
+        }
+        
+        // Modal functions
+        function showHowItWorks() {
+            document.getElementById('how-it-works-modal').style.display = 'flex';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        function copyContractAddress() {
+            navigator.clipboard.writeText(MDSP_TOKEN).then(() => {
+                const copyNotification = document.getElementById('copy-notification');
+                copyNotification.classList.add('show');
+                setTimeout(() => {
+                    copyNotification.classList.remove('show');
+                }, 2000);
+            });
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        };
+        
+        // Initialize the app
+        async function initApp() {
+            console.log('Initializing Million Dollar Sol Page app...');
+            
+            // Initialize canvas and grid
+            initCanvas();
+            
+            // Connect to RPC
+            const connected = await initConnection();
+            if (!connected) {
+                updateStatus('Error connecting to Solana. Please refresh.');
+                return;
+            }
+            
+            // Initialize WebSocket connection
+            initWebSocket();
+            updateStatus('Connect your wallet to start');
+            
+            // Resize grid overlay to match canvas
+            gridOverlay.width = canvas.width;
+            gridOverlay.height = canvas.height;
+            
+            // Set initial stats
+            updateStatsDisplay();
+        }
+        
+        // Start the app when document is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            initApp();
+        });
+    </script>
+</body>
+</html>
