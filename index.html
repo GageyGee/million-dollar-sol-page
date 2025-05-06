@@ -19,115 +19,150 @@
             color: #ffffff;
             height: 100vh;
             overflow: hidden;
-        }
-        
-        #container {
-            display: flex;
-            height: 100vh;
-        }
-        
-        #canvas-container {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: auto;
-            background: #000;
-            position: relative;
-        }
-        
-        #canvas {
-            cursor: crosshair;
-            image-rendering: pixelated;
-            border: 2px solid #333;
-            border-radius: 8px;
-            transition: transform 0.1s ease;
-            background-color: #ffffff;
-        }
-        
-        #grid-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 10;
-        }
-        
-        #sidebar {
-            width: 420px;
-            background: rgba(20, 20, 20, 0.95);
-            border-left: 1px solid #333;
-            padding: 32px;
             display: flex;
             flex-direction: column;
-            gap: 24px;
-            backdrop-filter: blur(10px);
-            position: relative;
-            overflow-y: auto;
         }
         
-        .header-container {
+        /* Modern top navigation bar */
+        .navbar {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 8px;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 24px;
+            height: 76px;
+            position: relative;
+            z-index: 100;
+        }
+        
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
         }
         
         .logo-container {
-            flex-grow: 1;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(45deg, #00FFA3, #03E1FF, #DC1FFF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-right: 16px;
+        }
+        
+        .tagline {
+            color: #666;
+            font-size: 14px;
         }
         
         .twitter-link {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             text-decoration: none;
             color: #999;
-            margin-left: 10px;
             transition: color 0.2s ease;
-            margin-top: 5px;
         }
         
         .twitter-link:hover {
             color: #1DA1F2;
         }
         
-        .logo {
-            font-size: 32px;
-            font-weight: 700;
-            background: linear-gradient(45deg, #00FFA3, #03E1FF, #DC1FFF);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
+        .navbar-center {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
         
-        .card {
-            background: rgba(30, 30, 30, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 20px;
-            backdrop-filter: blur(5px);
+        .stats-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(30, 30, 30, 0.5);
+            border-radius: 8px;
+            padding: 8px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
         
-        .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 12px;
+        .stats-label {
+            color: #888;
+            font-size: 12px;
+        }
+        
+        .stats-value {
             color: #00FFA3;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        .burn-stats .stats-value {
+            color: #FF4444;
+        }
+        
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .wallet-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 13px;
+            color: #888;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .wallet-address {
+            font-family: monospace;
+        }
+        
+        .connected-indicator {
+            width: 8px;
+            height: 8px;
+            background: #00FFA3;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .balance-display {
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 13px;
+            color: #00FFA3;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .balance-label {
+            color: #888;
+            font-weight: normal;
+            margin-right: 4px;
         }
         
         button {
-            padding: 14px 24px;
+            padding: 10px 18px;
             background: linear-gradient(45deg, #00FFA3, #03E1FF);
             border: none;
             border-radius: 8px;
             color: #ffffff !important;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            width: 100%;
         }
         
         button:hover {
@@ -143,122 +178,227 @@
             color: #888 !important;
         }
         
-        .footer-buttons {
-            margin-top: auto;
-            padding-top: 16px;
-            width: 100%;
-        }
-        
         #how-it-works-btn, #contract-address-btn {
-            background: linear-gradient(45deg, #DC1FFF, #03E1FF);
-            color: #ffffff !important;
-            padding: 10px 24px;
-            font-size: 13px;
-            margin-bottom: 6px;
-        }
-        
-        #wallet-info {
-            font-size: 14px;
-            color: #888;
-            font-family: monospace;
-        }
-        
-        #status-message {
-            padding: 12px;
-            border-radius: 8px;
-            background: rgba(40, 40, 40, 0.8);
-            text-align: center;
-            font-size: 14px;
-            color: #888;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .gradient-text {
-            background: linear-gradient(45deg, #00FFA3, #DC1FFF);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 600;
-        }
-        
-        .stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        
-        .stat-card {
-            background: rgba(40, 40, 40, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 12px;
-            text-align: center;
-        }
-        
-        .stat-value {
-            font-size: 16px;
-            font-weight: 600;
-            color: #00FFA3;
-            word-break: break-all;
-        }
-        
-        .stat-label {
-            font-size: 10px;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .burn-stats {
             background: rgba(30, 30, 30, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 16px;
+            font-size: 12px;
+            padding: 8px 14px;
         }
         
-        .burn-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: #FF4444;
-            margin-bottom: 8px;
+        #how-it-works-btn:hover, #contract-address-btn:hover {
+            background: rgba(40, 40, 40, 0.8);
         }
         
-        .burn-label {
-            font-size: 14px;
-            color: #888;
+        /* Main content area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 76px);
+            position: relative;
         }
         
-        .connected-indicator {
-            width: 8px;
-            height: 8px;
-            background: #00FFA3;
-            border-radius: 50%;
+        #canvas-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: auto;
+            background: #000;
+            position: relative;
+        }
+        
+        .canvas-wrapper {
+            position: relative;
             display: inline-block;
-            margin-right: 8px;
         }
         
-        .copy-notification {
-            position: fixed;
+        #canvas {
+            cursor: pointer;
+            image-rendering: pixelated;
+            border: 2px solid #333;
+            border-radius: 8px;
+            transition: transform 0.1s ease;
+            background-color: #ffffff;
+        }
+        
+        #grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        /* Block tooltip styles */
+        .block-tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 1000;
+            border: 1px solid rgba(0, 255, 163, 0.3);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            max-width: 250px;
+        }
+        
+        .wallet-link {
+            color: #00FFA3;
+            text-decoration: none;
+        }
+        
+        .wallet-link:hover {
+            text-decoration: underline;
+        }
+        
+        .timestamp {
+            color: #666;
+            font-size: 10px;
+            margin-top: 4px;
+        }
+        
+        /* Zoom controls */
+        .zoom-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 50;
+        }
+        
+        .zoom-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #333;
+            color: white;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .zoom-btn:hover {
+            background: #444;
+        }
+        
+        #zoom-in {
+            background: linear-gradient(45deg, #00FFA3, #03E1FF);
+        }
+        
+        #zoom-out {
+            background: linear-gradient(45deg, #03E1FF, #DC1FFF);
+        }
+        
+        #reset-zoom {
+            background: #444;
+            width: auto;
+            border-radius: 20px;
+            padding: 0 15px;
+            font-size: 14px;
+        }
+        
+        /* Status bar */
+        .status-bar {
+            position: absolute;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: #00FFA3;
-            color: #000;
-            padding: 12px 24px;
+            background: rgba(0, 0, 0, 0.7);
             border-radius: 8px;
-            font-weight: 600;
-            opacity: 0;
+            padding: 10px 20px;
+            font-size: 14px;
+            color: #888;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 50;
+            max-width: 80%;
+            text-align: center;
             transition: opacity 0.3s ease;
-            z-index: 1000;
         }
         
-        .copy-notification.show {
-            opacity: 1;
+        /* Floating Action Button for purchase/upload */
+        .fab-container {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
         
-        /* Image Upload Styles */
+        .fab {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00FFA3, #03E1FF);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .fab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+        }
+        
+        .fab-panel {
+            position: absolute;
+            bottom: 70px;
+            left: 0;
+            background: rgba(20, 20, 20, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            width: 300px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .panel-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #00FFA3;
+        }
+        
+        .selected-block-info {
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(40, 40, 40, 0.8);
+            margin-bottom: 16px;
+            text-align: center;
+            font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .selected-block-coords {
+            font-weight: 600;
+            color: #00FFA3;
+        }
+        
         .image-upload-container {
             display: flex;
             flex-direction: column;
@@ -293,7 +433,7 @@
             font-size: 12px;
             color: #666;
             text-align: center;
-            margin-top: 8px;
+            margin-top: 6px;
         }
         
         #upload-image-btn {
@@ -305,36 +445,50 @@
             display: none;
         }
         
-        .selected-block-info {
-            padding: 12px;
-            border-radius: 8px;
-            background: rgba(40, 40, 40, 0.8);
-            margin-bottom: 12px;
-            text-align: center;
-            font-size: 14px;
+        .url-input-container {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        #block-url {
+            background: rgba(30, 30, 30, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .selected-block-coords {
-            font-weight: 600;
-            color: #00FFA3;
-        }
-        
-        /* Grid overlay styles */
-        .grid-line {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            pointer-events: none;
-        }
-        
-        .horizontal-line {
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 14px;
             width: 100%;
-            height: 1px;
         }
         
-        .vertical-line {
-            height: 100%;
-            width: 1px;
+        #block-url::placeholder {
+            color: #666;
+        }
+        
+        .url-label {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: -4px;
+        }
+        
+        .copy-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #00FFA3;
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .copy-notification.show {
+            opacity: 1;
         }
         
         /* Modal Styles */
@@ -512,114 +666,7 @@
             width: 100px;
         }
         
-        /* Block tooltip styles */
-        .block-tooltip {
-            position: absolute;
-            background: rgba(0, 0, 0, 0.85);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            pointer-events: none;
-            z-index: 1000;
-            border: 1px solid rgba(0, 255, 163, 0.3);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            max-width: 250px;
-        }
-        
-        .wallet-link {
-            color: #00FFA3;
-            text-decoration: none;
-        }
-        
-        .wallet-link:hover {
-            text-decoration: underline;
-        }
-        
-        .timestamp {
-            color: #666;
-            font-size: 10px;
-            margin-top: 4px;
-        }
-        
-        /* Zoom controls */
-        .zoom-controls {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .zoom-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #333;
-            color: white;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .zoom-btn:hover {
-            background: #444;
-        }
-        
-        #zoom-in {
-            background: linear-gradient(45deg, #00FFA3, #03E1FF);
-        }
-        
-        #zoom-out {
-            background: linear-gradient(45deg, #03E1FF, #DC1FFF);
-        }
-        
-        #reset-zoom {
-            background: #444;
-            width: auto;
-            border-radius: 20px;
-            padding: 0 15px;
-            font-size: 14px;
-        }
-        
-        /* Stats bar at the top */
-        .stats-bar {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 20px;
-            padding: 8px 16px;
-            display: flex;
-            gap: 20px;
-            font-size: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 50;
-        }
-        
-        .stats-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .stats-label {
-            color: #888;
-        }
-        
-        .stats-value {
-            color: #00FFA3;
-            font-weight: 600;
-        }
-        
+        /* Scrollbar styles */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -638,14 +685,61 @@
             background: #444;
         }
         
+        /* Responsive styles */
+        @media (max-width: 1200px) {
+            .navbar {
+                flex-wrap: wrap;
+                height: auto;
+                padding: 12px 16px;
+                gap: 12px;
+            }
+            
+            .navbar-center {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .main-content {
+                height: calc(100vh - 120px);
+            }
+            
+            .navbar-right {
+                margin-left: auto;
+            }
+        }
+        
         @media (max-width: 768px) {
-            .modal-content {
-                width: 90%;
-                padding: 16px;
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 12px;
+                height: auto;
+            }
+            
+            .navbar-center, .navbar-right {
+                width: 100%;
+                justify-content: center;
+                margin-top: 12px;
+            }
+            
+            .stats-item {
+                flex: 1;
+                justify-content: center;
+            }
+            
+            .main-content {
+                height: calc(100vh - 180px);
             }
             
             .feature-list {
                 grid-template-columns: 1fr 1fr;
+            }
+            
+            .modal-content {
+                width: 90%;
+                padding: 16px;
             }
             
             .modal h2 {
@@ -656,49 +750,65 @@
                 font-size: 16px;
             }
             
-            #container {
+            .confirmation-preview {
                 flex-direction: column;
             }
             
-            #sidebar {
-                width: 100%;
-                max-height: 300px;
-            }
-            
-            #canvas-container {
-                height: calc(100vh - 300px);
-            }
-            
-            .stats-bar {
-                width: 90%;
-                flex-wrap: wrap;
-                justify-content: center;
+            .fab-panel {
+                width: 280px;
             }
         }
     </style>
 </head>
 <body>
-    <div id="container">
-        <div id="canvas-container">
-            <!-- Stats bar at top -->
-            <div class="stats-bar">
-                <div class="stats-item">
-                    <div class="stats-label">Blocks Sold:</div>
-                    <div class="stats-value" id="blocks-sold">0</div>
-                </div>
-                <div class="stats-item">
-                    <div class="stats-label">Blocks Available:</div>
-                    <div class="stats-value" id="blocks-available">10,000</div>
-                </div>
-                <div class="stats-item">
-                    <div class="stats-label">Total $MDSP Burned:</div>
-                    <div class="stats-value" id="total-burned">0</div>
-                </div>
+    <!-- Top navigation bar -->
+    <div class="navbar">
+        <div class="navbar-left">
+            <div class="logo-container">
+                <h1 class="logo">Million Dollar Sol Page</h1>
+                <p class="tagline">Own a piece of Solana history</p>
             </div>
-            
-            <!-- Main canvas -->
-            <canvas id="canvas" width="1000" height="1000"></canvas>
-            <canvas id="grid-overlay" width="1000" height="1000"></canvas>
+            <a href="https://x.com/MDSolPage" target="_blank" class="twitter-link" title="Follow us on X/Twitter">𝕏</a>
+        </div>
+        
+        <div class="navbar-center">
+            <div class="stats-item">
+                <div class="stats-label">Blocks Sold:</div>
+                <div class="stats-value" id="blocks-sold">0</div>
+            </div>
+            <div class="stats-item">
+                <div class="stats-label">Available:</div>
+                <div class="stats-value" id="blocks-available">2,500</div>
+            </div>
+            <div class="stats-item burn-stats">
+                <div class="stats-label">$MDSP Burned:</div>
+                <div class="stats-value" id="total-burned">0</div>
+            </div>
+            <button id="how-it-works-btn" onclick="showHowItWorks()">How It Works</button>
+            <button id="contract-address-btn" onclick="copyContractAddress()">Copy $MDSP</button>
+        </div>
+        
+        <div class="navbar-right">
+            <div class="balance-display" id="balance-container">
+                <span class="balance-label">Balance:</span>
+                <span id="balance">0</span> $MDSP
+            </div>
+            <div class="wallet-info">
+                <span class="connected-indicator" style="display: none;"></span>
+                <span class="wallet-address" id="wallet-address">Not connected</span>
+            </div>
+            <button id="connect-wallet" onclick="connectWallet()">Connect Wallet</button>
+        </div>
+    </div>
+    
+    <!-- Main content area -->
+    <div class="main-content">
+        <div id="canvas-container">
+            <!-- Canvas and grid in a wrapper -->
+            <div class="canvas-wrapper">
+                <canvas id="canvas" width="1000" height="1000"></canvas>
+                <canvas id="grid-overlay" width="1000" height="1000"></canvas>
+            </div>
             
             <!-- Zoom controls -->
             <div class="zoom-controls">
@@ -706,71 +816,44 @@
                 <div class="zoom-btn" id="reset-zoom">100%</div>
                 <div class="zoom-btn" id="zoom-in">+</div>
             </div>
-        </div>
-        
-        <div id="sidebar">
-            <div class="header-container">
-                <div class="logo-container">
-                    <h1 class="logo">Million Dollar Sol Page</h1>
-                    <p style="color: #666; font-size: 14px;">Own a piece of Solana history. Forever.</p>
+            
+            <!-- Status bar -->
+            <div class="status-bar" id="status-message">Click on any block to select it or visit its URL if already owned</div>
+            
+            <!-- Floating Action Button for block purchase -->
+            <div class="fab-container">
+                <div class="fab" id="fab-button" onclick="toggleFabPanel()">+</div>
+                <div class="fab-panel" id="fab-panel">
+                    <div class="panel-title">Purchase Block</div>
+                    
+                    <div class="selected-block-info" id="selected-block-info" style="display: none;">
+                        <div>Selected Block: <span class="selected-block-coords" id="selected-coords">None</span></div>
+                    </div>
+                    
+                    <div class="image-upload-container">
+                        <div id="image-preview">Select a block first</div>
+                        <p class="upload-instructions">Upload a 20x20 image or larger (will be resized)</p>
+                        <button id="upload-image-btn" onclick="triggerFileInput()" disabled>Select Image</button>
+                        <input type="file" id="file-input" accept="image/*" onchange="handleImageUpload(event)">
+                        
+                        <!-- Add URL input field -->
+                        <div class="url-input-container">
+                            <div class="url-label">Add a URL (optional):</div>
+                            <input type="url" id="block-url" placeholder="https://example.com" disabled>
+                        </div>
+                    </div>
+                    
+                    <button id="purchase-block" onclick="confirmPurchase()" disabled>Purchase Block</button>
                 </div>
-                <a href="https://x.com/MDSolPage" target="_blank" class="twitter-link" title="Follow us on X/Twitter">𝕏</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-title">Wallet Connection</div>
-                <button id="connect-wallet" onclick="connectWallet()">Connect Phantom</button>
-                <p id="wallet-info" style="margin-top: 12px;">
-                    <span class="connected-indicator" style="display: none;"></span>
-                    <span id="wallet-address">Not connected</span>
-                </p>
-            </div>
-            
-            <div class="selected-block-info" id="selected-block-info" style="display: none;">
-                <div>Selected Block: <span class="selected-block-coords" id="selected-coords">None</span></div>
-            </div>
-            
-            <div class="card">
-                <div class="card-title">Upload Your Image</div>
-                <div class="image-upload-container">
-                    <div id="image-preview">Select a block first</div>
-                    <p class="upload-instructions">Upload a 10x10 image or larger (will be resized)</p>
-                    <button id="upload-image-btn" onclick="triggerFileInput()" disabled>Select Image</button>
-                    <input type="file" id="file-input" accept="image/*" onchange="handleImageUpload(event)">
-                </div>
-            </div>
-            
-            <div class="stats">
-                <div class="stat-card">
-                    <div class="stat-value" id="balance">0</div>
-                    <div class="stat-label">$MDSP Balance</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">100</div>
-                    <div class="stat-label">Cost per Block</div>
-                </div>
-            </div>
-            
-            <div class="burn-stats">
-                <div class="burn-value" id="burned-amount">0</div>
-                <div class="burn-label">$MDSP Burned Total</div>
-            </div>
-            
-            <button id="purchase-block" onclick="confirmPurchase()" disabled>Purchase Block</button>
-            
-            <div id="status-message">Connect your wallet to start</div>
-            
-            <div class="footer-buttons">
-                <button id="contract-address-btn" onclick="copyContractAddress()">Copy $MDSP CA</button>
-                <button id="how-it-works-btn" onclick="showHowItWorks()">How It Works</button>
             </div>
         </div>
     </div>
     
-    <div class="copy-notification" id="copy-notification">Contract address copied!</div>
-    
-    <!-- Block tooltip for hover info -->
+    <!-- Block tooltip -->
     <div id="block-tooltip" class="block-tooltip" style="display: none;"></div>
+    
+    <!-- Copy notification -->
+    <div class="copy-notification" id="copy-notification">Contract address copied!</div>
     
     <!-- How It Works Modal -->
     <div id="how-it-works-modal" class="modal">
@@ -779,14 +862,15 @@
             <h2>Million Dollar Sol Page: How It Works</h2>
             
             <h3>The Concept</h3>
-            <p>Inspired by the original Million Dollar Homepage from 2005, the Million Dollar Sol Page is a 1000x1000 pixel canvas divided into 10,000 blocks of 10x10 pixels each. Once you purchase a block, it's yours forever on the Solana blockchain.</p>
+            <p>Inspired by the original Million Dollar Homepage from 2005, the Million Dollar Sol Page is a 1000x1000 pixel canvas divided into 2,500 blocks of 20x20 pixels each. Once you purchase a block, it's yours forever on the Solana blockchain.</p>
             
             <h3>Getting Started</h3>
             <ul>
                 <li>Connect your Phantom wallet</li>
                 <li>Ensure you have $MDSP tokens</li>
                 <li>Click any available block on the canvas</li>
-                <li>Upload your image (will be resized to 10x10 pixels)</li>
+                <li>Upload your image (will be resized to 20x20 pixels)</li>
+                <li>Add a URL link (optional) to make your image clickable</li>
                 <li>Pay 100 $MDSP to purchase the block permanently</li>
             </ul>
             
@@ -798,9 +882,9 @@
                     <p>Your block is yours forever</p>
                 </div>
                 <div class="feature-item">
-                    <div class="feature-icon">⚡</div>
-                    <h4>Real-time Updates</h4>
-                    <p>See changes instantly</p>
+                    <div class="feature-icon">🔗</div>
+                    <h4>Clickable Links</h4>
+                    <p>Drive traffic to your site</p>
                 </div>
                 <div class="feature-item">
                     <div class="feature-icon">🔥</div>
@@ -824,7 +908,8 @@
             <ul>
                 <li>Use the zoom controls to navigate the canvas</li>
                 <li>Hover over blocks to see who owns them</li>
-                <li>Images will be automatically resized to 10x10 pixels</li>
+                <li>Click on blocks to open associated URLs</li>
+                <li>Images will be automatically resized to 20x20 pixels</li>
                 <li>Check your $MDSP balance before purchasing</li>
                 <li>Be creative with your image - it will be part of Solana history!</li>
             </ul>
@@ -851,7 +936,11 @@
                         </div>
                         <div class="confirmation-detail">
                             <span class="confirmation-label">Size:</span>
-                            <span>10x10 pixels</span>
+                            <span>20x20 pixels</span>
+                        </div>
+                        <div class="confirmation-detail" id="url-confirmation-detail" style="display: none;">
+                            <span class="confirmation-label">URL:</span>
+                            <span id="confirm-url"></span>
                         </div>
                         <div class="confirmation-detail">
                             <span class="confirmation-label">Cost:</span>
@@ -879,13 +968,13 @@
         const API_URL = 'https://million-dollar-sol-page.onrender.com';
         const WS_URL = 'wss://million-dollar-sol-page.onrender.com';
         
-        const MDSP_TOKEN = 'BCNT4t3rv5Hva8RnUtJUJLnxzeFAabcYp8CghC1SmWin'; // Replace with actual token address
+        const MDSP_TOKEN = 'DQNehPFiu3jaVxqLnotGVpppsLy1qeAQeKSuxSHepump'; // Replace with actual token address
         const BURN_ADDRESS = '1nc1nerator11111111111111111111111111111111';
         const COST_PER_BLOCK = 100;
         const TOKEN_DECIMALS = 6;
         const CANVAS_SIZE = 1000;
-        const BLOCK_SIZE = 10;
-        const GRID_CELLS = CANVAS_SIZE / BLOCK_SIZE; // 100x100 grid
+        const BLOCK_SIZE = 20; // Changed from 10 to 20
+        const GRID_CELLS = CANVAS_SIZE / BLOCK_SIZE; // Now 50x50 grid
         
         // Use your paid QuickNode RPC endpoint
         const RPC_ENDPOINT = 'https://radial-chaotic-pool.solana-mainnet.quiknode.pro/192e8e76f0a288f5a32ace0b676f7f34778f219f/';
@@ -895,6 +984,7 @@
         
         let selectedBlock = null;
         let selectedImage = null;
+        let selectedUrl = null;
         let walletAddress = null;
         let ws = null;
         let connection = null;
@@ -902,6 +992,7 @@
         let blockState = {};
         let totalBurned = 0;
         let blocksSold = 0;
+        let fabPanelOpen = false;
         
         // DOM elements
         const canvas = document.getElementById('canvas');
@@ -911,18 +1002,20 @@
         const connectWalletBtn = document.getElementById('connect-wallet');
         const purchaseBlockBtn = document.getElementById('purchase-block');
         const uploadImageBtn = document.getElementById('upload-image-btn');
+        const blockUrlInput = document.getElementById('block-url');
         const statusMessage = document.getElementById('status-message');
         const walletAddressSpan = document.getElementById('wallet-address');
         const balanceSpan = document.getElementById('balance');
-        const burnedAmountSpan = document.getElementById('burned-amount');
+        const burnedAmountSpan = document.getElementById('total-burned');
         const blocksSoldSpan = document.getElementById('blocks-sold');
         const blocksAvailableSpan = document.getElementById('blocks-available');
-        const totalBurnedSpan = document.getElementById('total-burned');
         const connectedIndicator = document.querySelector('.connected-indicator');
         const imagePreview = document.getElementById('image-preview');
         const blockTooltip = document.getElementById('block-tooltip');
         const selectedBlockInfo = document.getElementById('selected-block-info');
         const selectedCoordsSpan = document.getElementById('selected-coords');
+        const canvasWrapper = document.querySelector('.canvas-wrapper');
+        const fabPanel = document.getElementById('fab-panel');
         
         // Initialize canvas and grid
         function initCanvas() {
@@ -1106,6 +1199,10 @@
             // Different highlight colors for available vs owned blocks
             const highlightColor = isOwned ? '#FF4444' : '#00FFA3';
             
+            // Clear previous highlight by redrawing the grid
+            drawGrid();
+            
+            // Draw highlight
             gridCtx.strokeStyle = highlightColor;
             gridCtx.lineWidth = 2;
             gridCtx.strokeRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
@@ -1114,9 +1211,15 @@
             selectedBlockInfo.style.display = 'block';
             selectedCoordsSpan.textContent = `(${x}, ${y})`;
             
-            // Only enable upload if block is available
-            uploadImageBtn.disabled = isOwned;
-            purchaseBlockBtn.disabled = isOwned || !selectedImage;
+            // Only enable upload and URL if block is available
+            uploadImageBtn.disabled = isOwned || !walletAddress;
+            blockUrlInput.disabled = isOwned || !walletAddress; 
+            purchaseBlockBtn.disabled = isOwned || !selectedImage || !walletAddress;
+            
+            // Show fab panel when a block is selected
+            if (!isOwned) {
+                showFabPanel();
+            }
             
             // Update status message
             if (isOwned) {
@@ -1142,11 +1245,17 @@
             const timestamp = blockData.timestamp ? new Date(blockData.timestamp).toLocaleString() : 'Unknown date';
             const shortWallet = wallet ? wallet.slice(0, 6) + '...' + wallet.slice(-4) : 'Unknown';
             
-            blockTooltip.innerHTML = `
+            // Simpler tooltip with a hint to click for URL
+            let tooltipContent = `
                 <div>Owned by: <a href="https://solscan.io/account/${wallet}" target="_blank" class="wallet-link">${shortWallet}</a></div>
                 <div class="timestamp">Purchased: ${timestamp}</div>
             `;
             
+            if (blockData.url) {
+                tooltipContent += `<div style="margin-top: 4px; color: #00FFA3;">Click to visit URL</div>`;
+            }
+            
+            blockTooltip.innerHTML = tooltipContent;
             blockTooltip.style.display = 'block';
             blockTooltip.style.left = `${mouseX + 10}px`;
             blockTooltip.style.top = `${mouseY + 10}px`;
@@ -1154,6 +1263,27 @@
         
         function hideBlockTooltip() {
             blockTooltip.style.display = 'none';
+        }
+        
+        // Toggle FAB panel visibility
+        function toggleFabPanel() {
+            if (fabPanelOpen) {
+                hideFabPanel();
+            } else {
+                showFabPanel();
+            }
+        }
+        
+        function showFabPanel() {
+            fabPanel.style.display = 'block';
+            fabPanelOpen = true;
+            document.getElementById('fab-button').textContent = 'x';
+        }
+        
+        function hideFabPanel() {
+            fabPanel.style.display = 'none';
+            fabPanelOpen = false;
+            document.getElementById('fab-button').textContent = '+';
         }
         
         // Utility functions
@@ -1168,15 +1298,23 @@
             return m % 1 === 0 ? m + 'M' : m.toFixed(1) + 'M';
         }
         
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+        
         function updateStatus(message) {
             statusMessage.textContent = message;
         }
         
         function updateStatsDisplay() {
             burnedAmountSpan.textContent = formatTokenAmount(totalBurned);
-            totalBurnedSpan.textContent = formatTokenAmount(totalBurned);
             blocksSoldSpan.textContent = blocksSold.toLocaleString();
-            blocksAvailableSpan.textContent = (10000 - blocksSold).toLocaleString();
+            blocksAvailableSpan.textContent = (GRID_CELLS * GRID_CELLS - blocksSold).toLocaleString();
         }
         
         // Event handlers
@@ -1192,28 +1330,47 @@
             const y = Math.floor(canvasY / BLOCK_SIZE);
             
             if (x >= 0 && x < GRID_CELLS && y >= 0 && y < GRID_CELLS) {
-                selectedBlock = { x, y };
+                const blockKey = `${x},${y}`;
+                const blockData = blockState[blockKey];
                 
-                // Redraw the grid to clear previous highlights
-                drawGrid();
+                // If block is owned and has a URL, open it
+                if (blockData && blockData.url) {
+                    window.open(blockData.url, '_blank');
+                    return;
+                }
+                
+                // Otherwise, select the block (if available)
+                selectedBlock = { x, y };
                 
                 // Highlight the selected block
                 highlightBlock(x, y);
                 
                 // Check if this block is available
-                const blockKey = `${x},${y}`;
-                if (blockState[blockKey]) {
+                if (blockData) {
                     // Block is owned
                     imagePreview.innerHTML = 'Block already owned';
                     imagePreview.style.backgroundImage = 'none';
                     selectedImage = null;
+                    selectedUrl = null;
+                    blockUrlInput.value = '';
+                    blockUrlInput.disabled = true;
                     purchaseBlockBtn.disabled = true;
+                    
+                    if (blockData.url) {
+                        updateStatus(`Block (${x}, ${y}) is owned and links to: ${blockData.url}`);
+                    } else {
+                        const owner = blockData.wallet;
+                        const shortOwner = owner ? `${owner.slice(0, 6)}...${owner.slice(-4)}` : 'Unknown';
+                        updateStatus(`Block (${x}, ${y}) is owned by ${shortOwner}`);
+                    }
                 } else {
                     // Block is available
                     imagePreview.innerHTML = 'Upload an image for this block';
                     imagePreview.style.backgroundImage = 'none';
                     uploadImageBtn.disabled = !walletAddress;
+                    blockUrlInput.disabled = !walletAddress;
                     purchaseBlockBtn.disabled = true;
+                    updateStatus(`Block (${x}, ${y}) is available for purchase`);
                 }
             }
         });
@@ -1245,6 +1402,28 @@
         
         canvas.addEventListener('mouseout', hideBlockTooltip);
         
+        // Close FAB panel when clicking outside
+        document.addEventListener('click', function(e) {
+            if (fabPanelOpen && !fabPanel.contains(e.target) && e.target.id !== 'fab-button') {
+                hideFabPanel();
+            }
+        });
+        
+        // Handle URL input
+        blockUrlInput.addEventListener('input', function(e) {
+            selectedUrl = e.target.value.trim();
+            
+            // Enable/disable purchase button based on image and URL validity
+            purchaseBlockBtn.disabled = !selectedImage || (selectedUrl && !isValidUrl(selectedUrl));
+            
+            // Show validation feedback
+            if (selectedUrl && !isValidUrl(selectedUrl)) {
+                blockUrlInput.style.borderColor = '#FF4444';
+            } else {
+                blockUrlInput.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+            }
+        });
+        
         // Add zoom functionality
         document.getElementById('zoom-in').addEventListener('click', function() {
             currentScale = Math.min(5, currentScale * 1.2);
@@ -1262,8 +1441,8 @@
         });
         
         function updateZoom() {
-            canvas.style.transform = `scale(${currentScale})`;
-            gridOverlay.style.transform = `scale(${currentScale})`;
+            // Apply zoom to the wrapper instead of individual canvases
+            canvasWrapper.style.transform = `scale(${currentScale})`;
             document.getElementById('reset-zoom').textContent = `${Math.round(currentScale * 100)}%`;
         }
         
@@ -1296,7 +1475,7 @@
                     resizeCanvas.height = BLOCK_SIZE;
                     const resizeCtx = resizeCanvas.getContext('2d');
                     
-                    // Draw the image resized to 10x10
+                    // Draw the image resized to 20x20
                     resizeCtx.drawImage(img, 0, 0, BLOCK_SIZE, BLOCK_SIZE);
                     
                     // Get the resized image as base64
@@ -1307,7 +1486,8 @@
                     imagePreview.style.backgroundImage = `url(${selectedImage})`;
                     
                     // Enable purchase button
-                    purchaseBlockBtn.disabled = !walletAddress;
+                    const urlIsValid = !selectedUrl || isValidUrl(selectedUrl);
+                    purchaseBlockBtn.disabled = !walletAddress || !urlIsValid;
                     
                     updateStatus('Image uploaded and resized. Ready to purchase block.');
                 };
@@ -1337,6 +1517,7 @@
                         
                         if (selectedBlock && !blockState[`${selectedBlock.x},${selectedBlock.y}`]) {
                             uploadImageBtn.disabled = false;
+                            blockUrlInput.disabled = false;
                             purchaseBlockBtn.disabled = !selectedImage;
                         }
                         
@@ -1434,9 +1615,26 @@
                 return;
             }
             
+            // Validate URL if provided
+            if (selectedUrl && !isValidUrl(selectedUrl)) {
+                updateStatus('Please enter a valid URL or leave it empty');
+                return;
+            }
+            
             // Set confirmation modal details
             document.getElementById('confirm-coords').textContent = `(${selectedBlock.x}, ${selectedBlock.y})`;
             document.getElementById('confirm-image-preview').src = selectedImage;
+            
+            // Show URL if provided
+            const urlConfirmationDetail = document.getElementById('url-confirmation-detail');
+            const confirmUrlSpan = document.getElementById('confirm-url');
+            
+            if (selectedUrl) {
+                confirmUrlSpan.textContent = selectedUrl;
+                urlConfirmationDetail.style.display = 'block';
+            } else {
+                urlConfirmationDetail.style.display = 'none';
+            }
             
             // Show modal
             document.getElementById('confirmation-modal').style.display = 'flex';
@@ -1533,6 +1731,19 @@
                 return;
             }
             
+            // Validate URL
+            let url = selectedUrl ? selectedUrl.trim() : null;
+            if (url && !isValidUrl(url)) {
+                updateStatus('Please enter a valid URL or leave it empty');
+                closeModal('confirmation-modal');
+                return;
+            }
+            
+            // If URL doesn't start with http:// or https://, add https://
+            if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+            
             updateStatus('Creating transaction...');
             purchaseBlockBtn.disabled = true;
             
@@ -1618,14 +1829,16 @@
                     burnAddress: BURN_ADDRESS,
                     tokenMint: MDSP_TOKEN,
                     tokenAmount: amount.toString(),
-                    timestamp: timestamp
+                    timestamp: timestamp,
+                    url: url
                 };
                 
                 // Optimistically update UI
                 blockState[blockKey] = {
                     imageData: selectedImage,
                     wallet: walletAddress,
-                    timestamp: timestamp
+                    timestamp: timestamp,
+                    url: url
                 };
                 
                 // Update the block visually
@@ -1665,9 +1878,14 @@
                         
                         // Reset selection
                         selectedImage = null;
+                        selectedUrl = null;
+                        blockUrlInput.value = '';
                         imagePreview.innerHTML = 'Select a block first';
                         imagePreview.style.backgroundImage = 'none';
                         selectedBlockInfo.style.display = 'none';
+                        
+                        // Hide FAB panel
+                        hideFabPanel();
                         
                         // Refresh canvas state
                         if (ws && ws.readyState === WebSocket.OPEN) {
@@ -1720,6 +1938,17 @@
             }
         };
         
+        // Position grid overlay correctly on top of the canvas
+        function positionGridOverlay() {
+            // Let the wrapper handle positioning both canvases
+            gridOverlay.style.position = 'absolute';
+            gridOverlay.style.top = '0';
+            gridOverlay.style.left = '0';
+        }
+        
+        // Make sure grid overlay is repositioned on window resize
+        window.addEventListener('resize', positionGridOverlay);
+        
         // Initialize the app
         async function initApp() {
             console.log('Initializing Million Dollar Sol Page app...');
@@ -1742,8 +1971,14 @@
             gridOverlay.width = canvas.width;
             gridOverlay.height = canvas.height;
             
+            // Position grid overlay correctly
+            positionGridOverlay();
+            
             // Set initial stats
             updateStatsDisplay();
+            
+            // Updated instructions to reflect simpler click behavior
+            updateStatus('Click on any block to select it or visit its URL if already owned');
         }
         
         // Start the app when document is ready
